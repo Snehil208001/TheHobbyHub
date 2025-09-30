@@ -6,6 +6,8 @@ import android.location.Geocoder
 import androidx.lifecycle.ViewModel
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -20,7 +22,8 @@ data class CitySelectionUiState(
     val currentCity: String? = null
 )
 
-class CitySelectionViewModel : ViewModel() {
+@HiltViewModel
+class CitySelectionViewModel @Inject constructor() : ViewModel() {
 
     private val _uiState = MutableStateFlow(CitySelectionUiState())
     val uiState: StateFlow<CitySelectionUiState> = _uiState.asStateFlow()

@@ -2,6 +2,8 @@ package com.example.thehobbyhub.mainui.loginscreen.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -15,7 +17,8 @@ data class ForgotPasswordUiState(
     val emailSent: Boolean = false
 )
 
-class ForgotPasswordViewModel : ViewModel() {
+@HiltViewModel
+class ForgotPasswordViewModel @Inject constructor() : ViewModel() {
 
     private val _uiState = MutableStateFlow(ForgotPasswordUiState())
     val uiState: StateFlow<ForgotPasswordUiState> = _uiState.asStateFlow()

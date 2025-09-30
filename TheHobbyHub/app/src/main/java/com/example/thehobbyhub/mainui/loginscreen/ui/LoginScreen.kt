@@ -23,6 +23,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel // Import ViewModel function
 import androidx.navigation.NavController
 import com.example.thehobbyhub.R
@@ -37,7 +38,7 @@ import kotlinx.coroutines.delay
 @Composable
 fun LoginScreen(
     navController: NavController,
-    viewModel: LoginViewModel = viewModel() // 1. Get ViewModel instance
+    viewModel: LoginViewModel = hiltViewModel() // 1. Get ViewModel instance
 ) {
     // 2. Collect UI State
     val uiState by viewModel.uiState.collectAsState()

@@ -4,6 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import com.example.thehobbyhub.core.navigations.Screen
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -27,7 +29,8 @@ data class SignupUiState(
 /**
  * ViewModel to manage the state and logic for the Signup Screen.
  */
-class SignupViewModel : ViewModel() {
+@HiltViewModel
+class SignupViewModel @Inject constructor() : ViewModel() {
 
     // Backing property to avoid state updates from other classes
     private val _uiState = MutableStateFlow(SignupUiState())

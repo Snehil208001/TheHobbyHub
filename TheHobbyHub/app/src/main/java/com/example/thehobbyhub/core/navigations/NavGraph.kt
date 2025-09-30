@@ -33,5 +33,6 @@ fun NavGraph() {
         composable(Screen.ForgotPassword.route) {
             ForgotPasswordScreen(navController = navController)
         }
+
     }
 }
