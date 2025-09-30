@@ -2,10 +2,12 @@ package com.example.thehobbyhub.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-val Purple80 = Color(0xFFD0BCFF)
-val PurpleGrey80 = Color(0xFFCCC2DC)
-val Pink80 = Color(0xFFEFB8C8)
-
-val Purple40 = Color(0xFF6650a4)
-val PurpleGrey40 = Color(0xFF625b71)
-val Pink40 = Color(0xFF7D5260)
+val Purple6C63FF = Color(0xFF6C63FF)
+val Purple7B61FF = Color(0xFF7B61FF)
+val LightLavenderEDEAFF = Color(0xFFEDEAFF)
+val LightLavenderF5F3FF = Color(0xFFF5F3FF)
+val DarkGray1A1A1A = Color(0xFF1A1A1A)
+val Gray7A7A7A = Color(0xFF7A7A7A)
+val Gray9A9A9A = Color(0xFF9A9A9A)
+val LightGrayE0E0E0 = Color(0xFFE0E0E0)
+val RedFF4B4B = Color(0xFFFF4B4B)
