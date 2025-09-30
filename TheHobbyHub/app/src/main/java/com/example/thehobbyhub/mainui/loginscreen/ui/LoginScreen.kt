@@ -1,4 +1,4 @@
-// snehil208001/thehobbyhub/TheHobbyHub-d30e7e1f3c7086c270533e7095de4d39ff2ade19/TheHobbyHub/app/src/main/java/com/example/thehobbyhub/mainui/loginscreen/ui/LoginScreen.kt
+// File: com/example/thehobbyhub/mainui/loginscreen/ui/LoginScreen.kt (UPDATED)
 package com.example.thehobbyhub.mainui.loginscreen.ui
 
 import androidx.compose.animation.AnimatedVisibility
@@ -10,15 +10,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Divider
-import androidx.compose.material3.Icon
-import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
-import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -31,19 +23,26 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel // Import ViewModel function
 import androidx.navigation.NavController
 import com.example.thehobbyhub.R
+import com.example.thehobbyhub.core.navigations.Screen
+import com.example.thehobbyhub.mainui.loginscreen.viewmodel.LoginViewModel
 import com.example.thehobbyhub.ui.theme.Gray7A7A7A
 import com.example.thehobbyhub.ui.theme.LightGrayE0E0E0
+import com.example.thehobbyhub.ui.theme.OffWhite
 import com.example.thehobbyhub.ui.theme.Purple6C63FF
 import kotlinx.coroutines.delay
 
 @Composable
-fun LoginScreen(navController: NavController) {
-    var email by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
+fun LoginScreen(
+    navController: NavController,
+    viewModel: LoginViewModel = viewModel() // 1. Get ViewModel instance
+) {
+    // 2. Collect UI State
+    val uiState by viewModel.uiState.collectAsState()
 
-    // Flags to control the staggered visibility of different UI sections
+    // --- Animation States and Specs (REMAIN UNCHANGED) ---
     var logoAndTitleVisible by remember { mutableStateOf(false) }
     var mainFormVisible by remember { mutableStateOf(false) }
     var socialLoginVisible by remember { mutableStateOf(false) }
@@ -52,67 +51,49 @@ fun LoginScreen(navController: NavController) {
     val density = LocalDensity.current
     val smootherEasing = remember { CubicBezierEasing(0.2f, 0.0f, 0.2f, 1.0f) }
 
-    // --- LOGO ANIMATIONS (Fade-in + Subtle Horizontal Shift Left-to-Right) ---
-    val logoInitialOffsetX = with(density) { (-40).dp.toPx() } // Start 40dp left
+    // Logo Animations (UNCHANGED)
+    val logoInitialOffsetX = with(density) { (-40).dp.toPx() }
     val logoTargetOffsetX = 0f
-
     val logoTranslationX by animateFloatAsState(
         targetValue = if (logoAndTitleVisible) logoTargetOffsetX else logoInitialOffsetX,
-        animationSpec = tween(
-            durationMillis = 1200, // A bit faster for the initial element
-            easing = smootherEasing
-        ),
+        animationSpec = tween(durationMillis = 1200, easing = smootherEasing),
         label = "logoTranslationX"
     )
     val logoAlpha by animateFloatAsState(
         targetValue = if (logoAndTitleVisible) 1f else 0f,
-        animationSpec = tween(
-            durationMillis = 1000, // Match fade with initial movement
-            easing = smootherEasing
-        ),
+        animationSpec = tween(durationMillis = 1000, easing = smootherEasing),
         label = "logoAlpha"
     )
 
-    // --- MAIN FORM ANIMATIONS (Fade-in + Subtle Horizontal Shift Right-to-Left) ---
-    val formInitialOffsetX = with(density) { (40).dp.toPx() } // Start 40dp right
+    // Main Form Animations (UNCHANGED)
+    val formInitialOffsetX = with(density) { (40).dp.toPx() }
     val formTargetOffsetX = 0f
-
     val formTranslationX by animateFloatAsState(
         targetValue = if (mainFormVisible) formTargetOffsetX else formInitialOffsetX,
-        animationSpec = tween(
-            durationMillis = 1200, // Match logo speed
-            easing = smootherEasing
-        ),
+        animationSpec = tween(durationMillis = 1200, easing = smootherEasing),
         label = "formTranslationX"
     )
     val formAlpha by animateFloatAsState(
         targetValue = if (mainFormVisible) 1f else 0f,
-        animationSpec = tween(
-            durationMillis = 1000, // Match logo fade
-            easing = smootherEasing
-        ),
+        animationSpec = tween(durationMillis = 1000, easing = smootherEasing),
         label = "formAlpha"
     )
 
-    // --- ANIMATION SEQUENCE TRIGGER ---
+    // Animation Sequence Trigger (UNCHANGED)
     LaunchedEffect(Unit) {
-        // Logo appears first
         logoAndTitleVisible = true
-        delay(800) // Small delay before main form starts
-        // Main form (inputs, login button) appears
+        delay(800)
         mainFormVisible = true
-        delay(800) // Small delay before social login
-        // Social login (OR divider, Google button) appears
+        delay(800)
         socialLoginVisible = true
-        delay(400) // Small delay before sign up text
-        // Sign up text appears last
+        delay(400)
         signUpTextVisible = true
     }
 
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.White),
+            .background(OffWhite),
         contentAlignment = Alignment.Center
     ) {
         Column(
@@ -121,15 +102,15 @@ fun LoginScreen(navController: NavController) {
                 .padding(horizontal = 24.dp, vertical = 48.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            // App Logo (Animated)
-            Spacer(modifier = Modifier.weight(0.5f)) // Adjust spacing
+            // --- Logo and Title (UNCHANGED) ---
+            Spacer(modifier = Modifier.weight(0.5f))
 
             if (logoAndTitleVisible) {
                 Image(
                     painter = painterResource(id = R.drawable.thehobbyhub),
                     contentDescription = "App Logo",
                     modifier = Modifier
-                        .fillMaxWidth(0.6f) // Keep logo size reasonable
+                        .fillMaxWidth(0.6f)
                         .graphicsLayer {
                             alpha = logoAlpha
                             translationX = logoTranslationX
@@ -138,7 +119,7 @@ fun LoginScreen(navController: NavController) {
             }
             Spacer(modifier = Modifier.height(32.dp))
 
-            // Main UI Block (Input Fields, Buttons)
+            // --- Main UI Block (Input Fields, Buttons) ---
             AnimatedVisibility(
                 visible = mainFormVisible,
                 enter = fadeIn(animationSpec = tween(durationMillis = 800, easing = smootherEasing))
@@ -150,9 +131,10 @@ fun LoginScreen(navController: NavController) {
                         translationX = formTranslationX
                     }
                 ) {
+                    // 3. Connect UI to ViewModel State and Events
                     OutlinedTextField(
-                        value = email,
-                        onValueChange = { email = it },
+                        value = uiState.email,
+                        onValueChange = { viewModel.onEmailChange(it) },
                         label = { Text("Email") },
                         modifier = Modifier.fillMaxWidth(),
                         shape = RoundedCornerShape(12.dp),
@@ -164,8 +146,8 @@ fun LoginScreen(navController: NavController) {
                     )
                     Spacer(modifier = Modifier.height(16.dp))
                     OutlinedTextField(
-                        value = password,
-                        onValueChange = { password = it },
+                        value = uiState.password,
+                        onValueChange = { viewModel.onPasswordChange(it) },
                         label = { Text("Password") },
                         visualTransformation = PasswordVisualTransformation(),
                         modifier = Modifier.fillMaxWidth(),
@@ -177,57 +159,72 @@ fun LoginScreen(navController: NavController) {
                         )
                     )
                     TextButton(
-                        onClick = { /* TODO: Handle forgot password navigation */ },
+                        onClick = { navController.navigate(Screen.ForgotPassword.route) },
                         modifier = Modifier.align(Alignment.End)
                     ) {
                         Text("Forgot Password?")
                     }
                     Spacer(modifier = Modifier.height(16.dp))
+
+                    // Display Error (if present)
+                    uiState.error?.let { error ->
+                        Text(
+                            text = error,
+                            color = MaterialTheme.colorScheme.error,
+                            modifier = Modifier.fillMaxWidth()
+                                .padding(bottom = 8.dp)
+                        )
+                    }
+
+                    // Login Button uses ViewModel for onClick and state for enabled/loading
                     Button(
-                        onClick = { navController.navigate("city_selection") },
+                        onClick = { viewModel.onLoginClicked(navController) },
+                        enabled = !uiState.isLoading,
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(56.dp),
                         shape = RoundedCornerShape(12.dp),
                         colors = ButtonDefaults.buttonColors(containerColor = Purple6C63FF)
                     ) {
-                        Text("Login", fontSize = 16.sp, fontWeight = FontWeight.SemiBold)
+                        if (uiState.isLoading) {
+                            CircularProgressIndicator(
+                                color = Color.White,
+                                modifier = Modifier.size(24.dp)
+                            )
+                        } else {
+                            Text("Login", fontSize = 16.sp, fontWeight = FontWeight.SemiBold)
+                        }
                     }
                 }
             }
-            Spacer(modifier = Modifier.height(24.dp)) // Add space after form before social login
+            Spacer(modifier = Modifier.height(24.dp))
 
-            // "OR" Divider and Google Button
+            // --- "OR" Divider and Google Button (UNCHANGED structure, connect onClick) ---
             AnimatedVisibility(
                 visible = socialLoginVisible,
                 enter = fadeIn(animationSpec = tween(durationMillis = 600, easing = smootherEasing))
             ) {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    // Divider Row (UNCHANGED)
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(vertical = 0.dp), // Reduce padding as Spacer handles vertical
+                            .padding(vertical = 0.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Divider(
-                            modifier = Modifier.weight(1f),
-                            color = LightGrayE0E0E0
-                        )
+                        Divider(modifier = Modifier.weight(1f), color = LightGrayE0E0E0)
                         Text(
                             "OR",
                             modifier = Modifier.padding(horizontal = 16.dp),
                             color = Gray7A7A7A,
                             fontWeight = FontWeight.SemiBold
                         )
-                        Divider(
-                            modifier = Modifier.weight(1f),
-                            color = LightGrayE0E0E0
-                        )
+                        Divider(modifier = Modifier.weight(1f), color = LightGrayE0E0E0)
                     }
-                    Spacer(modifier = Modifier.height(24.dp)) // Space before button
+                    Spacer(modifier = Modifier.height(24.dp))
 
                     OutlinedButton(
-                        onClick = { /* TODO: Handle Google sign-in */ },
+                        onClick = { viewModel.onGoogleSignInClicked() }, // Event handler
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(56.dp),
@@ -248,14 +245,14 @@ fun LoginScreen(navController: NavController) {
                 }
             }
 
-            Spacer(modifier = Modifier.weight(1f)) // Pushes content up to leave space for bottom text
+            Spacer(modifier = Modifier.weight(1f))
 
-            // Bottom Text
+            // --- Bottom Text (connect onClick) ---
             AnimatedVisibility(
                 visible = signUpTextVisible,
                 enter = fadeIn(animationSpec = tween(durationMillis = 500, easing = smootherEasing))
             ) {
-                TextButton(onClick = { navController.navigate("signup") }) {
+                TextButton(onClick = { viewModel.onSignUpClicked(navController) }) { // Event handler
                     Text("Don't have an account? Sign up")
                 }
             }

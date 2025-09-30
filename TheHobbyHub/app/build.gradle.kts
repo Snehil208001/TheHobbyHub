@@ -72,4 +72,7 @@ dependencies {
 
     // lotte animations
     implementation("com.airbnb.android:lottie-compose:6.4.1")
+
+    //google map
+    implementation("com.google.android.gms:play-services-location:21.0.1")
 }

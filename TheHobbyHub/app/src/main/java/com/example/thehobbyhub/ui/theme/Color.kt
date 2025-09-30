@@ -11,3 +11,9 @@ val Gray7A7A7A = Color(0xFF7A7A7A)
 val Gray9A9A9A = Color(0xFF9A9A9A)
 val LightGrayE0E0E0 = Color(0xFFE0E0E0)
 val RedFF4B4B = Color(0xFFFF4B4B)
+
+val GradientStart = Color(0xFFEAEAFB) // Soft Lavender
+val GradientEnd = Color(0xFFFFFFFF)   // Example end color
+
+// Clean background color based on the image
+val OffWhite = Color(0xFFD5E9FF)

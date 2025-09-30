@@ -13,6 +13,8 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             TheHobbyHubTheme(darkTheme = false) {
+                // NavGraph() is assumed to be your Composable function
+                // that handles navigation between screens.
                 NavGraph()
             }
         }

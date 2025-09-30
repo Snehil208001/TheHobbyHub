@@ -33,7 +33,7 @@ private val LightColorScheme = lightColorScheme(
     primary = Purple6C63FF,
     secondary = LightLavenderF5F3FF,
     tertiary = LightLavenderEDEAFF,
-    background = Color.White,
+    background = OffWhite   , // Set the default background to OffWhite
     surface = Color.White,
     onPrimary = Color.White,
     onSecondary = DarkGray1A1A1A,
@@ -45,7 +45,6 @@ private val LightColorScheme = lightColorScheme(
 @Composable
 fun TheHobbyHubTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
-    // Dynamic color is available on Android 12+
     dynamicColor: Boolean = true,
     content: @Composable () -> Unit
 ) {

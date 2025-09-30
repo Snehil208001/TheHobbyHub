@@ -45,6 +45,7 @@ import com.example.thehobbyhub.core.navigations.Screen
 import com.example.thehobbyhub.ui.theme.Gray7A7A7A
 import com.example.thehobbyhub.ui.theme.LightGrayE0E0E0
 import com.example.thehobbyhub.ui.theme.LightLavenderEDEAFF
+import com.example.thehobbyhub.ui.theme.OffWhite
 import com.example.thehobbyhub.ui.theme.Purple6C63FF
 import kotlinx.coroutines.delay
 
@@ -83,7 +84,7 @@ fun SignupScreen(navController: NavController) {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.White)
+            .background(OffWhite)
     ) {
         // Gradient Background
         Box(
@@ -92,7 +93,7 @@ fun SignupScreen(navController: NavController) {
                 .height(250.dp)
                 .background(
                     brush = Brush.verticalGradient(
-                        colors = listOf(LightLavenderEDEAFF, Color.White)
+                        colors = listOf(LightLavenderEDEAFF, OffWhite)
                     )
                 )
         )
