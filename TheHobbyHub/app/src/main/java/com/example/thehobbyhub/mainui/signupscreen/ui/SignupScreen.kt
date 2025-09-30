@@ -1,4 +1,4 @@
-package com.example.thehobbyhub.mainui.loginscreen.ui
+package com.example.thehobbyhub.mainui.signupscreen.ui
 
 
 import androidx.compose.foundation.layout.*
@@ -14,9 +14,11 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 
 @Composable
-fun LoginScreen(navController: NavController) {
+fun SignupScreen(navController: NavController) {
+    var username by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
+    var confirmPassword by remember { mutableStateOf("") }
 
     Column(
         modifier = Modifier
@@ -25,8 +27,15 @@ fun LoginScreen(navController: NavController) {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text("Login", style = androidx.compose.material3.MaterialTheme.typography.headlineMedium)
+        Text("Create Account", style = androidx.compose.material3.MaterialTheme.typography.headlineMedium)
         Spacer(modifier = Modifier.height(16.dp))
+        OutlinedTextField(
+            value = username,
+            onValueChange = { username = it },
+            label = { Text("Username") },
+            modifier = Modifier.fillMaxWidth()
+        )
+        Spacer(modifier = Modifier.height(8.dp))
         OutlinedTextField(
             value = email,
             onValueChange = { email = it },
@@ -41,12 +50,20 @@ fun LoginScreen(navController: NavController) {
             visualTransformation = PasswordVisualTransformation(),
             modifier = Modifier.fillMaxWidth()
         )
+        Spacer(modifier = Modifier.height(8.dp))
+        OutlinedTextField(
+            value = confirmPassword,
+            onValueChange = { confirmPassword = it },
+            label = { Text("Confirm Password") },
+            visualTransformation = PasswordVisualTransformation(),
+            modifier = Modifier.fillMaxWidth()
+        )
         Spacer(modifier = Modifier.height(16.dp))
-        Button(onClick = { /* TODO: Handle login logic */ }, modifier = Modifier.fillMaxWidth()) {
-            Text("Login")
+        Button(onClick = { /* TODO: Handle signup logic */ }, modifier = Modifier.fillMaxWidth()) {
+            Text("Sign Up")
         }
-        TextButton(onClick = { navController.navigate("signup") }) {
-            Text("Don't have an account? Sign up")
+        TextButton(onClick = { navController.navigate("login") }) {
+            Text("Already have an account? Login")
         }
     }
 }
