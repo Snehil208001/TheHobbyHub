@@ -1,3 +1,4 @@
+// snehil208001/thehobbyhub/TheHobbyHub-d30e7e1f3c7086c270533e7095de4d39ff2ade19/TheHobbyHub/app/src/main/java/com/example/thehobbyhub/mainui/loginscreen/ui/LoginScreen.kt
 package com.example.thehobbyhub.mainui.loginscreen.ui
 
 import androidx.compose.animation.AnimatedVisibility
@@ -28,7 +29,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -176,9 +176,15 @@ fun LoginScreen(navController: NavController) {
                             disabledContainerColor = Color.White,
                         )
                     )
-                    Spacer(modifier = Modifier.height(32.dp))
+                    TextButton(
+                        onClick = { /* TODO: Handle forgot password navigation */ },
+                        modifier = Modifier.align(Alignment.End)
+                    ) {
+                        Text("Forgot Password?")
+                    }
+                    Spacer(modifier = Modifier.height(16.dp))
                     Button(
-                        onClick = { /* TODO: Handle login logic */ },
+                        onClick = { navController.navigate("city_selection") },
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(56.dp),

@@ -1,3 +1,4 @@
+// snehil208001/thehobbyhub/TheHobbyHub-d30e7e1f3c7086c270533e7095de4d39ff2ade19/TheHobbyHub/app/src/main/java/com/example/thehobbyhub/mainui/signupscreen/ui/SignupScreen.kt
 package com.example.thehobbyhub.mainui.signupscreen.ui
 
 import androidx.compose.animation.AnimatedVisibility
@@ -10,9 +11,11 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -26,20 +29,23 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.example.thehobbyhub.ui.theme.LightLavenderEDEAFF
-import com.example.thehobbyhub.ui.theme.Purple6C63FF
 import com.example.thehobbyhub.R
+import com.example.thehobbyhub.core.navigations.Screen
 import com.example.thehobbyhub.ui.theme.Gray7A7A7A
 import com.example.thehobbyhub.ui.theme.LightGrayE0E0E0
+import com.example.thehobbyhub.ui.theme.LightLavenderEDEAFF
+import com.example.thehobbyhub.ui.theme.Purple6C63FF
 import kotlinx.coroutines.delay
 
 @Composable
@@ -48,6 +54,7 @@ fun SignupScreen(navController: NavController) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var confirmPassword by remember { mutableStateOf("") }
+    var agreedToTerms by remember { mutableStateOf(false) }
 
     // Animation States
     var headerVisible by remember { mutableStateOf(false) }
@@ -187,9 +194,47 @@ fun SignupScreen(navController: NavController) {
                             disabledContainerColor = Color.White,
                         )
                     )
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Checkbox(
+                            checked = agreedToTerms,
+                            onCheckedChange = { agreedToTerms = it }
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        val annotatedString = buildAnnotatedString {
+                            append("I agree to the ")
+                            pushStringAnnotation(tag = "TERMS", annotation = "terms")
+                            withStyle(style = SpanStyle(color = Purple6C63FF, fontWeight = FontWeight.Bold)) {
+                                append("Terms of Service")
+                            }
+                            pop()
+                            append(" and have read the ")
+                            pushStringAnnotation(tag = "PRIVACY", annotation = "privacy")
+                            withStyle(style = SpanStyle(color = Purple6C63FF, fontWeight = FontWeight.Bold)) {
+                                append("Privacy Policy")
+                            }
+                            pop()
+                        }
+                        ClickableText(
+                            text = annotatedString,
+                            onClick = { offset ->
+                                annotatedString.getStringAnnotations(tag = "TERMS", start = offset, end = offset)
+                                    .firstOrNull()?.let {
+                                        navController.navigate(Screen.TermsOfService.route)
+                                    }
+                                annotatedString.getStringAnnotations(tag = "PRIVACY", start = offset, end = offset)
+                                    .firstOrNull()?.let {
+                                        navController.navigate(Screen.PrivacyPolicy.route)
+                                    }
+                            }
+                        )
+                    }
                     Spacer(modifier = Modifier.height(32.dp))
                     Button(
-                        onClick = { /* TODO: Handle signup logic */ },
+                        onClick = { navController.navigate(Screen.CitySelection.route) },
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(56.dp),
