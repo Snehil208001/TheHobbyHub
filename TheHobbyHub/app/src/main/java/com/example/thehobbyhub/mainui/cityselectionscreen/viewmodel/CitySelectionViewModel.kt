@@ -4,15 +4,17 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.location.Geocoder
 import androidx.lifecycle.ViewModel
+import androidx.navigation.NavController
+import com.example.thehobbyhub.core.navigations.Screen
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import dagger.hilt.android.lifecycle.HiltViewModel
+import java.util.Locale
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
-import java.util.*
 
 data class CitySelectionUiState(
     val searchQuery: String = "",
@@ -32,11 +34,14 @@ class CitySelectionViewModel @Inject constructor() : ViewModel() {
         _uiState.update { it.copy(searchQuery = query) }
     }
 
-    fun onCitySelected(city: String) {
+    fun onCitySelected(city: String, navController: NavController) {
         _uiState.update { it.copy(selectedCity = city, currentCity = city) }
+        // UPDATED: Use the new createRoute function to pass the city
+        navController.navigate(Screen.Home.createRoute(city)) {
+            popUpTo(Screen.CitySelection.route) { inclusive = true }
+        }
     }
 
-    // --- New Function to Handle Permission Denial ---
     fun onLocationPermissionDenied() {
         _uiState.update {
             it.copy(
@@ -47,7 +52,7 @@ class CitySelectionViewModel @Inject constructor() : ViewModel() {
     }
 
     @SuppressLint("MissingPermission")
-    fun fetchCurrentLocation(context: Context) {
+    fun fetchCurrentLocation(context: Context, navController: NavController) {
         _uiState.update { it.copy(isLoading = true, error = null) }
 
         val fusedLocationClient: FusedLocationProviderClient =
@@ -66,6 +71,10 @@ class CitySelectionViewModel @Inject constructor() : ViewModel() {
                                 currentCity = city,
                                 selectedCity = city
                             )
+                        }
+                        // UPDATED: Use the new createRoute function here as well
+                        navController.navigate(Screen.Home.createRoute(city)) {
+                            popUpTo(Screen.CitySelection.route) { inclusive = true }
                         }
                     } else {
                         _uiState.update { it.copy(isLoading = false, error = "Could not determine city from location.") }

@@ -26,7 +26,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
+// import androidx.lifecycle.viewmodel.compose.viewModel // <-- THIS LINE WAS REMOVED
 import androidx.navigation.NavController
 import com.example.thehobbyhub.core.utils.hasLocationPermission
 import com.example.thehobbyhub.core.utils.rememberLocationPermissionLauncher
@@ -53,7 +53,7 @@ fun CitySelectionScreen(
 
     val locationPermissionLauncher = rememberLocationPermissionLauncher { isGranted ->
         if (isGranted) {
-            citySelectionViewModel.fetchCurrentLocation(context)
+            citySelectionViewModel.fetchCurrentLocation(context, navController) // Pass navController
         } else {
             citySelectionViewModel.onLocationPermissionDenied()
         }
@@ -84,7 +84,7 @@ fun CitySelectionScreen(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(OffWhite) // Use the new clean background color
+            .background(OffWhite)
     ) {
         AnimatedVisibility(
             visible = isContentVisible,
@@ -147,7 +147,7 @@ fun CitySelectionScreen(
                         Button(
                             onClick = {
                                 if (hasLocationPermission(context)) {
-                                    citySelectionViewModel.fetchCurrentLocation(context)
+                                    citySelectionViewModel.fetchCurrentLocation(context, navController) // Pass navController
                                 } else {
                                     locationPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
                                 }
@@ -218,7 +218,7 @@ fun CitySelectionScreen(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .clickable {
-                                    citySelectionViewModel.onCitySelected(city)
+                                    citySelectionViewModel.onCitySelected(city, navController) // Pass navController
                                 }
                         ) {
                             Row(

@@ -83,4 +83,8 @@ dependencies {
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
     implementation(libs.hilt.navigation.compose)
+
+    //icons
+    implementation("androidx.compose.material:material-icons-extended:1.x.x")
+// Use your current Compose version
 }
