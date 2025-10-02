@@ -22,7 +22,6 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.thehobbyhub.mainui.homescreen.viewmodel.*
-import com.example.thehobbyhub.ui.theme.Purple6C63FF
 import com.example.thehobbyhub.ui.theme.RedFF4B4B
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -34,6 +33,7 @@ fun AdminHomeScreen(
     val uiState by viewModel.uiState.collectAsState()
 
     Scaffold(
+        containerColor = MaterialTheme.colorScheme.background, // Set the background color here
         topBar = {
             TopAppBar(
                 title = { Text("Admin Dashboard") },
@@ -58,22 +58,28 @@ fun AdminHomeScreen(
         ) {
             item { WelcomeSection(adminName = uiState.adminName, city = uiState.city) }
             item { QuickStatsCard(stats = uiState.stats) }
-            item { QuickActionsCard(
-                onAddEvent = viewModel::addEvent,
-                onAddHub = viewModel::addHub,
-                onBroadcast = viewModel::broadcastAnnouncement
-            ) }
+            item {
+                QuickActionsCard(
+                    onAddEvent = viewModel::addEvent,
+                    onAddHub = viewModel::addHub,
+                    onBroadcast = viewModel::broadcastAnnouncement
+                )
+            }
             item { AnalyticsCard(analytics = uiState.analytics) }
-            item { InteractiveApprovalsCard(
-                requests = uiState.approvalRequests,
-                onApprove = viewModel::approveRequest,
-                onReject = viewModel::rejectRequest
-            ) }
+            item {
+                InteractiveApprovalsCard(
+                    requests = uiState.approvalRequests,
+                    onApprove = viewModel::approveRequest,
+                    onReject = viewModel::rejectRequest
+                )
+            }
             item { EnhancedEventsCard(events = uiState.managedEvents) }
-            item { UserManagementCard(
-                recentUsers = uiState.recentUsers,
-                onViewAll = viewModel::viewAllUsers
-            ) }
+            item {
+                UserManagementCard(
+                    recentUsers = uiState.recentUsers,
+                    onViewAll = viewModel::viewAllUsers
+                )
+            }
             item { AnnouncementsCard(announcements = uiState.pastAnnouncements) }
             item { RecentActivityCard(activities = uiState.activityFeed) }
         }
@@ -88,8 +94,19 @@ fun WelcomeSection(adminName: String, city: String) {
     Column(modifier = Modifier.fillMaxWidth()) {
         Text("Welcome, $adminName!", style = MaterialTheme.typography.headlineMedium)
         Row(verticalAlignment = Alignment.CenterVertically) {
-            Text("Managing: $city", style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.primary)
-            Icon(Icons.Default.LocationOn, contentDescription = "Location", tint = MaterialTheme.colorScheme.primary, modifier = Modifier.padding(start = 4.dp).size(20.dp))
+            Text(
+                "Managing: $city",
+                style = MaterialTheme.typography.titleMedium,
+                color = MaterialTheme.colorScheme.primary
+            )
+            Icon(
+                Icons.Default.LocationOn,
+                contentDescription = "Location",
+                tint = MaterialTheme.colorScheme.primary,
+                modifier = Modifier
+                    .padding(start = 4.dp)
+                    .size(20.dp)
+            )
         }
     }
 }
@@ -103,22 +120,40 @@ fun QuickStatsCard(stats: AdminStats) {
                 .padding(16.dp),
             horizontalArrangement = Arrangement.SpaceAround
         ) {
-            StatItem(icon = Icons.Default.Group, value = stats.activeUsers.toString(), label = "Active Users")
-            StatItem(icon = Icons.Default.Event, value = stats.upcomingEvents.toString(), label = "Upcoming")
-            StatItem(icon = Icons.Default.Notifications, value = stats.pendingApprovals.toString(), label = "Approvals", isUrgent = true)
+            StatItem(
+                icon = Icons.Default.Group,
+                value = stats.activeUsers.toString(),
+                label = "Active Users"
+            )
+            StatItem(
+                icon = Icons.Default.Event,
+                value = stats.upcomingEvents.toString(),
+                label = "Upcoming"
+            )
+            StatItem(
+                icon = Icons.Default.Notifications,
+                value = stats.pendingApprovals.toString(),
+                label = "Approvals",
+                isUrgent = true
+            )
         }
     }
 }
 
 @Composable
 fun StatItem(icon: ImageVector, value: String, label: String, isUrgent: Boolean = false) {
-    // FIXED: Safely convert string to int to prevent crashes
     val intValue = value.toIntOrNull() ?: 0
-    val contentColor = if (isUrgent && intValue > 0) RedFF4B4B else MaterialTheme.colorScheme.onSurface
+    val contentColor =
+        if (isUrgent && intValue > 0) RedFF4B4B else MaterialTheme.colorScheme.onSurface
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Icon(icon, contentDescription = label, modifier = Modifier.size(28.dp), tint = contentColor)
         Spacer(modifier = Modifier.height(4.dp))
-        Text(value, style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold, color = contentColor)
+        Text(
+            value,
+            style = MaterialTheme.typography.titleLarge,
+            fontWeight = FontWeight.Bold,
+            color = contentColor
+        )
         Text(label, style = MaterialTheme.typography.bodySmall)
     }
 }
@@ -136,7 +171,11 @@ fun QuickActionsCard(onAddEvent: () -> Unit, onAddHub: () -> Unit, onBroadcast: 
             modifier = Modifier.fillMaxWidth(),
             colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondaryContainer)
         ) {
-            Icon(Icons.Default.Campaign, contentDescription = "Broadcast", modifier = Modifier.size(20.dp))
+            Icon(
+                Icons.Default.Campaign,
+                contentDescription = "Broadcast",
+                modifier = Modifier.size(20.dp)
+            )
             Spacer(modifier = Modifier.width(8.dp))
             Text("Broadcast Announcement")
         }
@@ -146,14 +185,28 @@ fun QuickActionsCard(onAddEvent: () -> Unit, onAddHub: () -> Unit, onBroadcast: 
 @Composable
 fun AnalyticsCard(analytics: AnalyticsData) {
     DashboardCard(title = "Analytics & Insights", icon = Icons.Default.BarChart) {
-        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceAround, verticalAlignment = Alignment.CenterVertically) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceAround,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Text("Events This Month", style = MaterialTheme.typography.labelMedium)
-                Text(analytics.eventsThisMonth.toString(), style = MaterialTheme.typography.headlineMedium, fontWeight = FontWeight.ExtraBold, color = Purple6C63FF)
+                Text(
+                    analytics.eventsThisMonth.toString(),
+                    style = MaterialTheme.typography.headlineMedium,
+                    fontWeight = FontWeight.ExtraBold,
+                    color = MaterialTheme.colorScheme.primary
+                )
             }
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Text("User Growth", style = MaterialTheme.typography.labelMedium)
-                Text("+${analytics.userGrowthPercent}%", style = MaterialTheme.typography.headlineMedium, fontWeight = FontWeight.ExtraBold, color = Purple6C63FF)
+                Text(
+                    "+${analytics.userGrowthPercent}%",
+                    style = MaterialTheme.typography.headlineMedium,
+                    fontWeight = FontWeight.ExtraBold,
+                    color = MaterialTheme.colorScheme.primary
+                )
             }
         }
         Text(
@@ -165,7 +218,11 @@ fun AnalyticsCard(analytics: AnalyticsData) {
 }
 
 @Composable
-fun InteractiveApprovalsCard(requests: List<ApprovalRequest>, onApprove: (String) -> Unit, onReject: (String) -> Unit) {
+fun InteractiveApprovalsCard(
+    requests: List<ApprovalRequest>,
+    onApprove: (String) -> Unit,
+    onReject: (String) -> Unit
+) {
     DashboardCard(title = "Pending Approvals", icon = Icons.Default.Task) {
         if (requests.isEmpty()) {
             Text("No pending requests.", style = MaterialTheme.typography.bodyMedium)
@@ -183,14 +240,29 @@ fun InteractiveApprovalsCard(requests: List<ApprovalRequest>, onApprove: (String
                         Column {
                             Text(request.description, fontWeight = FontWeight.SemiBold)
                             if (request.reportedBy != null) {
-                                Text("Reported by: ${request.reportedBy}", style = MaterialTheme.typography.labelSmall)
+                                Text(
+                                    "Reported by: ${request.reportedBy}",
+                                    style = MaterialTheme.typography.labelSmall
+                                )
                             }
                         }
                     }
-                    Row(modifier = Modifier.fillMaxWidth().padding(top = 8.dp), horizontalArrangement = Arrangement.End) {
-                        Button(onClick = { onApprove(request.id) }, colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF4CAF50)), modifier = Modifier.height(36.dp)) { Text("Approve") }
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 8.dp), horizontalArrangement = Arrangement.End
+                    ) {
+                        Button(
+                            onClick = { onApprove(request.id) },
+                            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF4CAF50)),
+                            modifier = Modifier.height(36.dp)
+                        ) { Text("Approve") }
                         Spacer(modifier = Modifier.width(8.dp))
-                        Button(onClick = { onReject(request.id) }, colors = ButtonDefaults.buttonColors(containerColor = RedFF4B4B), modifier = Modifier.height(36.dp)) { Text("Reject") }
+                        Button(
+                            onClick = { onReject(request.id) },
+                            colors = ButtonDefaults.buttonColors(containerColor = RedFF4B4B),
+                            modifier = Modifier.height(36.dp)
+                        ) { Text("Reject") }
                     }
                 }
                 Divider(modifier = Modifier.padding(vertical = 8.dp))
@@ -203,15 +275,26 @@ fun InteractiveApprovalsCard(requests: List<ApprovalRequest>, onApprove: (String
 fun EnhancedEventsCard(events: List<ManagedEvent>) {
     DashboardCard(title = "Event Management", icon = Icons.Default.EditCalendar) {
         events.forEach { event ->
-            Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(bottom = 8.dp)) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.padding(bottom = 8.dp)
+            ) {
                 Column(modifier = Modifier.weight(1f)) {
                     Text(event.title, fontWeight = FontWeight.Bold)
-                    Text("${event.hubName} • ${event.date}", style = MaterialTheme.typography.bodySmall)
+                    Text(
+                        "${event.hubName} • ${event.date}",
+                        style = MaterialTheme.typography.bodySmall
+                    )
                     EventStatusBadge(status = event.status)
                 }
                 Row {
                     IconButton(onClick = { /* Edit */ }) { Icon(Icons.Default.Edit, "Edit") }
-                    IconButton(onClick = { /* View */ }) { Icon(Icons.Default.People, "View Participants") }
+                    IconButton(onClick = { /* View */ }) {
+                        Icon(
+                            Icons.Default.People,
+                            "View Participants"
+                        )
+                    }
                 }
             }
             Divider()
@@ -243,7 +326,10 @@ fun UserManagementCard(recentUsers: List<RecentUser>, onViewAll: () -> Unit) {
     DashboardCard(title = "User Management", icon = Icons.Default.ManageAccounts) {
         Text("Newly Joined Users", fontWeight = FontWeight.Bold)
         recentUsers.forEach { user ->
-            Row(modifier = Modifier.padding(vertical = 4.dp), verticalAlignment = Alignment.CenterVertically) {
+            Row(
+                modifier = Modifier.padding(vertical = 4.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
                 Icon(Icons.Default.Person, contentDescription = null, modifier = Modifier.size(20.dp))
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(user.name, modifier = Modifier.weight(1f))
@@ -262,10 +348,18 @@ fun AnnouncementsCard(announcements: List<Announcement>) {
     DashboardCard(title = "Past Announcements", icon = Icons.Default.History) {
         announcements.forEach { announcement ->
             Row(modifier = Modifier.padding(bottom = 4.dp)) {
-                Icon(Icons.Default.Campaign, contentDescription = null, modifier = Modifier.padding(end = 8.dp))
+                Icon(
+                    Icons.Default.Campaign,
+                    contentDescription = null,
+                    modifier = Modifier.padding(end = 8.dp)
+                )
                 Column {
                     Text(announcement.message)
-                    Text(announcement.timestamp, style = MaterialTheme.typography.labelSmall, color = Color.Gray)
+                    Text(
+                        announcement.timestamp,
+                        style = MaterialTheme.typography.labelSmall,
+                        color = Color.Gray
+                    )
                 }
             }
             Divider()
@@ -281,7 +375,11 @@ fun RecentActivityCard(activities: List<RecentActivity>) {
                 Text("•", modifier = Modifier.padding(end = 8.dp))
                 Column {
                     Text(activity.description)
-                    Text(activity.timestamp, style = MaterialTheme.typography.labelSmall, color = Color.Gray)
+                    Text(
+                        activity.timestamp,
+                        style = MaterialTheme.typography.labelSmall,
+                        color = Color.Gray
+                    )
                 }
             }
         }

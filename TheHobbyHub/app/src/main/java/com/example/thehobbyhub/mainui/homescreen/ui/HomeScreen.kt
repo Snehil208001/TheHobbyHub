@@ -41,7 +41,6 @@ import com.example.thehobbyhub.R
 import com.example.thehobbyhub.mainui.homescreen.viewmodel.HomeViewModel
 import com.example.thehobbyhub.mainui.homescreen.viewmodel.HobbyEvent
 import com.example.thehobbyhub.mainui.homescreen.viewmodel.HobbyHub
-import com.example.thehobbyhub.ui.theme.OffWhite
 import com.example.thehobbyhub.ui.theme.TheHobbyHubTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -53,13 +52,13 @@ fun HomeScreen(
     val uiState by viewModel.uiState.collectAsState()
 
     Scaffold(
-        containerColor = OffWhite,
+        containerColor = MaterialTheme.colorScheme.background,
         topBar = {
             TopAppBar(
                 title = {
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.clickable { /* TODO: Navigate to City Selection */ }.background(OffWhite)
+                        modifier = Modifier.clickable { /* TODO: Navigate to City Selection */ }
                     ) {
                         Icon(
                             Icons.Default.LocationOn,
@@ -121,7 +120,12 @@ fun HomeScreen(
                             value = "", // This would be managed by ViewModel
                             onValueChange = { /* TODO */ },
                             placeholder = { Text("Search your favorites events ...") },
-                            leadingIcon = { Icon(Icons.Default.Search, contentDescription = "Search") },
+                            leadingIcon = {
+                                Icon(
+                                    Icons.Default.Search,
+                                    contentDescription = "Search"
+                                )
+                            },
                             modifier = Modifier.weight(1f),
                             shape = RoundedCornerShape(12.dp),
                             colors = TextFieldDefaults.colors(
@@ -244,7 +248,11 @@ fun CategoryChip(category: String) {
             modifier = Modifier.padding(8.dp)
         ) {
             // Placeholder for category icon, you'd use actual icons here
-            Icon(Icons.Default.MusicNote, contentDescription = category, modifier = Modifier.size(32.dp))
+            Icon(
+                Icons.Default.MusicNote,
+                contentDescription = category,
+                modifier = Modifier.size(32.dp)
+            )
             Spacer(modifier = Modifier.height(4.dp))
             Text(category, style = MaterialTheme.typography.labelMedium)
         }
@@ -275,7 +283,10 @@ fun FeaturedEventCard(event: HobbyEvent) {
                     modifier = Modifier
                         .align(Alignment.TopStart)
                         .padding(8.dp)
-                        .background(MaterialTheme.colorScheme.primary, RoundedCornerShape(8.dp))
+                        .background(
+                            MaterialTheme.colorScheme.primary,
+                            RoundedCornerShape(8.dp)
+                        )
                         .padding(horizontal = 8.dp, vertical = 4.dp)
                 ) {
                     Text(
@@ -287,9 +298,17 @@ fun FeaturedEventCard(event: HobbyEvent) {
                 }
             }
             Column(modifier = Modifier.padding(16.dp)) {
-                Text(event.title, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+                Text(
+                    event.title,
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold
+                )
                 Spacer(modifier = Modifier.height(4.dp))
-                Text(event.hubName, style = MaterialTheme.typography.bodyMedium, color = Color.Gray)
+                Text(
+                    event.hubName,
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = Color.Gray
+                )
             }
         }
     }
@@ -344,11 +363,24 @@ fun UpcomingEventCard(event: HobbyEvent) {
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis
                 )
-                Text(text = event.priceRange, style = MaterialTheme.typography.bodySmall, color = Color.Gray) // New field
+                Text(
+                    text = event.priceRange,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = Color.Gray
+                ) // New field
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    Icon(Icons.Default.LocationOn, contentDescription = "Location", modifier = Modifier.size(16.dp), tint = Color.Gray)
+                    Icon(
+                        Icons.Default.LocationOn,
+                        contentDescription = "Location",
+                        modifier = Modifier.size(16.dp),
+                        tint = Color.Gray
+                    )
                     Spacer(modifier = Modifier.width(4.dp))
-                    Text(text = event.hubName, style = MaterialTheme.typography.bodySmall, color = Color.Gray)
+                    Text(
+                        text = event.hubName,
+                        style = MaterialTheme.typography.bodySmall,
+                        color = Color.Gray
+                    )
                 }
             }
         }
@@ -398,7 +430,12 @@ fun BottomNavigationBar() {
             onClick = { /* TODO: Navigate to Explore */ }
         )
         NavigationBarItem(
-            icon = { Icon(Icons.Default.Star, contentDescription = "Saved") }, // Using Star for Saved
+            icon = {
+                Icon(
+                    Icons.Default.Star,
+                    contentDescription = "Saved"
+                )
+            }, // Using Star for Saved
             label = { Text("Saved") },
             selected = false,
             onClick = { /* TODO: Navigate to Saved */ }
