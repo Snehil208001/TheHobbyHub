@@ -1,3 +1,4 @@
+// com/example/thehobbyhub/mainui/loginscreen/viewmodel/LoginViewModel.kt
 package com.example.thehobbyhub.mainui.loginscreen.viewmodel
 
 import androidx.lifecycle.ViewModel
@@ -62,12 +63,12 @@ class LoginViewModel @Inject constructor() : ViewModel() {
 
             _uiState.update { it.copy(isLoading = false) }
 
-            if (_uiState.value.role == "Admin") {
-                // TODO: Navigate to the admin dashboard
-            } else {
-                navController.navigate(Screen.CitySelection.route) {
-                    popUpTo(Screen.Login.route) { inclusive = true }
-                }
+            // This is the corrected logic:
+            // It gets the selected role from the UI state.
+            val role = _uiState.value.role
+            // It navigates to the CitySelection screen and passes the role.
+            navController.navigate(Screen.CitySelection.createRoute(role)) {
+                popUpTo(Screen.Login.route) { inclusive = true }
             }
         }
     }
@@ -99,7 +100,6 @@ class LoginViewModel @Inject constructor() : ViewModel() {
             }
             "User" -> {
                 // Navigate to the standard User Signup Screen
-                // This is the screen we previously renamed from SignupScreen
                 navController.navigate(Screen.Signup.route)
             }
             else -> {

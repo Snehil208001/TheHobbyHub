@@ -1,8 +1,10 @@
+// com/example/thehobbyhub/mainui/cityselectionscreen/viewmodel/CitySelectionViewModel.kt
 package com.example.thehobbyhub.mainui.cityselectionscreen.viewmodel
 
 import android.annotation.SuppressLint
 import android.content.Context
 import android.location.Geocoder
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import com.example.thehobbyhub.core.navigations.Screen
@@ -25,10 +27,14 @@ data class CitySelectionUiState(
 )
 
 @HiltViewModel
-class CitySelectionViewModel @Inject constructor() : ViewModel() {
+class CitySelectionViewModel @Inject constructor(
+    private val savedStateHandle: SavedStateHandle
+) : ViewModel() {
 
     private val _uiState = MutableStateFlow(CitySelectionUiState())
     val uiState: StateFlow<CitySelectionUiState> = _uiState.asStateFlow()
+
+    private val userRole: String = savedStateHandle.get<String>(Screen.CitySelection.ARG_ROLE) ?: "User"
 
     fun onSearchQueryChange(query: String) {
         _uiState.update { it.copy(searchQuery = query) }
@@ -36,8 +42,15 @@ class CitySelectionViewModel @Inject constructor() : ViewModel() {
 
     fun onCitySelected(city: String, navController: NavController) {
         _uiState.update { it.copy(selectedCity = city, currentCity = city) }
-        // UPDATED: Use the new createRoute function to pass the city
-        navController.navigate(Screen.Home.createRoute(city)) {
+
+        // This logic determines where to go next based on the role.
+        val route = if (userRole == "Admin") {
+            Screen.AdminHome.createRoute(city)
+        } else {
+            Screen.Home.createRoute(city)
+        }
+
+        navController.navigate(route) {
             popUpTo(Screen.CitySelection.route) { inclusive = true }
         }
     }
@@ -72,8 +85,16 @@ class CitySelectionViewModel @Inject constructor() : ViewModel() {
                                 selectedCity = city
                             )
                         }
-                        // UPDATED: Use the new createRoute function here as well
-                        navController.navigate(Screen.Home.createRoute(city)) {
+
+                        // This is the corrected logic for the "Use My Current Location" button.
+                        // It checks the role before navigating.
+                        val route = if (userRole == "Admin") {
+                            Screen.AdminHome.createRoute(city)
+                        } else {
+                            Screen.Home.createRoute(city)
+                        }
+
+                        navController.navigate(route) {
                             popUpTo(Screen.CitySelection.route) { inclusive = true }
                         }
                     } else {
