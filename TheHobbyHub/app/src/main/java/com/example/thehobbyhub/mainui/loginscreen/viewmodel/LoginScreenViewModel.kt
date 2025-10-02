@@ -20,7 +20,8 @@ data class LoginUiState(
     val email: String = "",
     val password: String = "",
     val isLoading: Boolean = false,
-    val error: String? = null
+    val error: String? = null,
+    val role: String = "User"
 )
 
 /**
@@ -42,6 +43,10 @@ class LoginViewModel @Inject constructor() : ViewModel() {
         _uiState.update { it.copy(password = newPassword, error = null) }
     }
 
+    fun onRoleChange(newRole: String) {
+        _uiState.update { it.copy(role = newRole) }
+    }
+
     // --- Event Handlers ---
 
     /**
@@ -57,10 +62,12 @@ class LoginViewModel @Inject constructor() : ViewModel() {
 
             _uiState.update { it.copy(isLoading = false) }
 
-            // Always navigate to the city selection screen
-            navController.navigate(Screen.CitySelection.route) {
-                // Clear the back stack up to the login screen to prevent going back
-                popUpTo(Screen.Login.route) { inclusive = true }
+            if (_uiState.value.role == "Admin") {
+                // TODO: Navigate to the admin dashboard
+            } else {
+                navController.navigate(Screen.CitySelection.route) {
+                    popUpTo(Screen.Login.route) { inclusive = true }
+                }
             }
         }
     }
@@ -81,9 +88,24 @@ class LoginViewModel @Inject constructor() : ViewModel() {
     }
 
     /**
-     * Navigates to the sign-up screen.
+     * Navigates to the correct sign-up screen based on the selected role.
      */
     fun onSignUpClicked(navController: NavController) {
-        navController.navigate(Screen.Signup.route)
+        // Check the current role from the UI state
+        when (_uiState.value.role) {
+            "Admin" -> {
+                // Navigate directly to the detailed Admin Signup Screen
+                navController.navigate(Screen.AdminSignup.route)
+            }
+            "User" -> {
+                // Navigate to the standard User Signup Screen
+                // This is the screen we previously renamed from SignupScreen
+                navController.navigate(Screen.Signup.route)
+            }
+            else -> {
+                // Fallback to the role selection screen if something goes wrong
+                navController.navigate(Screen.Signup.route)
+            }
+        }
     }
 }

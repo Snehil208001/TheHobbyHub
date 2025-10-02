@@ -12,6 +12,7 @@ import com.example.thehobbyhub.mainui.legalscreens.ui.PrivacyPolicyScreen
 import com.example.thehobbyhub.mainui.legalscreens.ui.TermsOfServiceScreen
 import com.example.thehobbyhub.mainui.loginscreen.ui.ForgotPasswordScreen
 import com.example.thehobbyhub.mainui.loginscreen.ui.LoginScreen
+import com.example.thehobbyhub.mainui.signupscreen.ui.AdminSignupScreen
 import com.example.thehobbyhub.mainui.signupscreen.ui.SignupScreen
 
 @Composable
@@ -23,6 +24,9 @@ fun NavGraph() {
         }
         composable(Screen.Signup.route) {
             SignupScreen(navController = navController)
+        }
+        composable(Screen.AdminSignup.route) { // Add the composable for the new route
+            AdminSignupScreen(navController = navController)
         }
         composable(Screen.CitySelection.route) {
             CitySelectionScreen(navController = navController)

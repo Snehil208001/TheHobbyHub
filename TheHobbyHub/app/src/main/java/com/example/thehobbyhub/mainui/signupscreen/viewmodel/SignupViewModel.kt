@@ -1,4 +1,4 @@
-package com.example.thehobbyhub.mainui.signupscreen.ui
+package com.example.thehobbyhub.mainui.signupscreen.viewmodel // CORRECTED PACKAGE NAME
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -90,9 +90,13 @@ class SignupViewModel @Inject constructor() : ViewModel() {
             _uiState.update { it.copy(isLoading = false) }
 
             if (isSuccess) {
-                // Navigate to the next screen (e.g., Home or verification screen)
-                navController.navigate(Screen.CitySelection.route) {
-                    popUpTo(Screen.Signup.route) { inclusive = true } // Remove signup from back stack
+                // Navigate to the Login screen after successful signup
+                navController.navigate(Screen.Login.route) {
+                    // Clear the back stack to prevent going back to signup
+                    popUpTo(navController.graph.startDestinationId) {
+                        inclusive = true
+                    }
+                    launchSingleTop = true
                 }
             } else {
                 // Handle failure
